@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ pagetitle }}</title>
+</head>
+<body>
+    <h1>Program Manager</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Send">
+    </form>
+    <div style="border: 1px solid black; margin-bottom: 2px;">
+        {{ build|safe }}
+    </div>
+    <div style="border: 1px solid black;">
+        {{ run|safe }}
+    </div>
+</body>
+</html>
