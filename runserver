@@ -1,0 +1,5 @@
+#!/bin/bash
+cd ~/Documents/Program_Manager/
+source venv/bin/activate
+python --version
+python manage.py runserver 0.0.0.0:8000

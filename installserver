@@ -1,0 +1,17 @@
+#!/bin/bash
+cd ~/Documents/
+git clone https://github.com/andrey99429/Program_Manager.git
+
+if [ -d Program_Manager/ ]; then
+cd Program_Manager/
+
+pip install virtualenv
+python3 -m venv venv
+source venv/bin/activate
+
+pip install --upgrade pip
+pip install -r requirements.txt
+
+./runserver
+
+fi
