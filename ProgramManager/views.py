@@ -30,7 +30,7 @@ def index(request):
 @login_required
 def projects(request):
     context = get_base_context('Список проектов')
-
+    context['projects'] = Project.objects.all()
     return render(request, 'projects.html', context)
 
 
@@ -49,17 +49,26 @@ def project_edit(request, project_id=None):
     if request.method == 'POST':
         form = Project_Form(request.POST)
         if form.is_valid():
-            project = Project.objects.create(name='name', author=request.user)
-            project.dir_path = PROJECTS_BASE_DIR + '/proj' + str(project.id)
-            project.author = request.user
-            project.save()
-            return redirect(reverse('projects'))
-        else:
-            pass
+            if project_id is None:
+                project = Project.objects.create(
+                    name=form.cleaned_data['name'],
+                    author=request.user
+                )
+                project.dir_path = PROJECTS_BASE_DIR + '/proj' + str(project.id),
+                project.save()
+                return redirect(reverse('projects'))
+            else:
+                if Project.objects.filter(id=project_id).exists():
+                    project = Project.objects.get(id=project_id)
+                    project.name = form.cleaned_data['name']
+                    project.save()
+                    return redirect(reverse('projects'))
+                else:
+                    raise Http404
 
     else:
         form = Project_Form()
-        if project_id is None:
+        if project_id is not None:
             if Project.objects.filter(id=project_id).exists():
                 form.initial['name'] = Project.objects.get(id=project_id).name
             else:
