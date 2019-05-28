@@ -1,4 +1,27 @@
 {% extends 'base.html' %}
 {% block content %}
-    projects.html
+    <h2 class="mt-4">Список проектов</h2>
+    <a href="{% url 'project_new' %}" class="btn btn-primary float-right mb-1" role="button">Создать проект</a>
+    <table class="table table-bordered">
+    <thead>
+    <tr>
+        <th scope="col">Название</th>
+        <th scope="col">Версия</th>
+        <th scope="col">Последнее изменение</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for project in projects %}
+        <tr>
+            <td>{{ project.name }}</td>
+            <td>{{ project.version }}</td>
+            <td>{{ project.upload_time }}</td>
+            <td><a href="{% url 'project_edit' project.id %}" role="button" class="btn btn-link p-0">Изменить</a></td>
+            <td><a href="{% url 'project_delete' project.id %}" role="button" class="btn btn-link p-0">Удалить</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
 {% endblock %}

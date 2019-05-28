@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from ProgramManager.models import Project, Version, User
-from ProgramManager.forms import FileLoading
+from ProgramManager.forms import Project_Form
 from program_manager.settings import BASE_DIR
 from ProgramManager.BuildRun import BuildRun
 
@@ -30,6 +30,41 @@ def index(request):
 def projects(request):
     context = get_base_context('Список проектов')
     return render(request, 'projects.html', context)
+
+
+@login_required
+def project_edit(request, project_id=None):
+    context = get_base_context('')
+    form = None
+
+    if request.method == 'POST':
+        form = Project_Form(request.POST)
+        if form.is_valid():
+            pass
+        else:
+            pass
+
+    else:
+        form = Project_Form()
+        if project_id is None:
+            context['pagetitle'] = 'Создание проекта'
+            context['submit_title'] = 'Создать'
+        else:
+            context['pagetitle'] = 'Редактирование проекта'
+            context['submit_title'] = 'Сохранить'
+            if Project.objects.filter(id=project_id).exists():
+                form.initial['name'] = Project.objects.get(id=project_id).name
+            else:
+                raise Http404
+
+    context['form'] = form
+    return render(request, 'project_edit.html', context)
+
+
+@login_required
+def project_delete(request, project_id):
+    context = get_base_context('Удаление проекта')
+    return render(request, 'project_delete.html', context)
 
 
 @login_required

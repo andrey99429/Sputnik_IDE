@@ -1,7 +1,5 @@
 import os
 from subprocess import Popen, PIPE
-from program_manager.settings import BASE_DIR
-from ProgramManager.models import Program
 
 
 class BuildRun:

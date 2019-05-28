@@ -1,6 +1,7 @@
 from django import forms
 
+attrs = {'class': 'form-control', 'autocomplete': 'off'}
 
-class FileLoading(forms.Form):
-    name = forms.CharField(max_length=150)
-    file = forms.FileField()
+
+class Project_Form(forms.Form):
+    name = forms.CharField(label='Название', max_length=50, widget=forms.TextInput(attrs=attrs))
