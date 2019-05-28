@@ -11,3 +11,8 @@ class ProgrammanagerConfig(AppConfig):
             user.first_name = 'Администратор'
             user.save()
             print('Admin created')
+
+        from program_manager.settings import PROJECTS_BASE_DIR
+        import os
+        if not os.path.isdir(PROJECTS_BASE_DIR):
+            os.mkdir(PROJECTS_BASE_DIR)

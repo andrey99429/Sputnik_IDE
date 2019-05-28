@@ -1,14 +1,15 @@
-import os
-from django.shortcuts import render
-from django.http import Http404
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.http import Http404
+from django.urls import reverse
+
+from program_manager.settings import PROJECTS_BASE_DIR
 from ProgramManager.models import Project, Version, User
 from ProgramManager.forms import Project_Form
-from program_manager.settings import BASE_DIR
 from ProgramManager.BuildRun import BuildRun
 
 
-def get_base_context(pagetitle):
+def get_base_context(pagetitle=''):
     return {
         'pagetitle': pagetitle,
         'menu': [
@@ -29,29 +30,36 @@ def index(request):
 @login_required
 def projects(request):
     context = get_base_context('Список проектов')
+
     return render(request, 'projects.html', context)
 
 
 @login_required
 def project_edit(request, project_id=None):
-    context = get_base_context('')
+    context = get_base_context()
+
+    if project_id is None:
+        context['pagetitle'] = 'Создание проекта'
+        context['submit_title'] = 'Создать'
+    else:
+        context['pagetitle'] = 'Редактирование проекта'
+        context['submit_title'] = 'Сохранить'
     form = None
 
     if request.method == 'POST':
         form = Project_Form(request.POST)
         if form.is_valid():
-            pass
+            project = Project.objects.create(name='name', author=request.user)
+            project.dir_path = PROJECTS_BASE_DIR + '/proj' + str(project.id)
+            project.author = request.user
+            project.save()
+            return redirect(reverse('projects'))
         else:
             pass
 
     else:
         form = Project_Form()
         if project_id is None:
-            context['pagetitle'] = 'Создание проекта'
-            context['submit_title'] = 'Создать'
-        else:
-            context['pagetitle'] = 'Редактирование проекта'
-            context['submit_title'] = 'Сохранить'
             if Project.objects.filter(id=project_id).exists():
                 form.initial['name'] = Project.objects.get(id=project_id).name
             else:
