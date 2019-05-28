@@ -54,7 +54,8 @@ def project_edit(request, project_id=None):
                     name=form.cleaned_data['name'],
                     author=request.user
                 )
-                project.dir_path = PROJECTS_BASE_DIR + '/proj' + str(project.id),
+                project.dir_name = '/proj' + str(project.id)
+                project.create_dir()
                 project.save()
                 return redirect(reverse('projects'))
             else:
