@@ -10,6 +10,7 @@
         <th scope="col">Последнее изменение</th>
         <th scope="col"></th>
         <th scope="col"></th>
+        <th scope="col"></th>
     </tr>
     </thead>
     <tbody>
@@ -18,7 +19,8 @@
             <td>{{ project.name }}</td>
             <td>{{ project.version }}</td>
             <td>{{ project.upload_time }}</td>
-            <td><a href="{% url 'project_edit' project.id %}" role="button" class="btn btn-link p-0">Изменить</a></td>
+            <td><a href="{% url 'project' project.id %}" role="button" class="btn btn-link p-0">Работать с проектом</a></td>
+            <td><a href="{% url 'project_edit' project.id %}" role="button" class="btn btn-link p-0">Редактировать</a></td>
             <td><a href="{% url 'project_delete' project.id %}" role="button" class="btn btn-link p-0">Удалить</a></td>
         </tr>
     {% endfor %}

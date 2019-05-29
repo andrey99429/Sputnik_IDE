@@ -13,15 +13,15 @@
 
 <body>
 <header class="navbar navbar-expand-md navbar-dark bg-dark">
-    <span class="navbar-brand">??? Name ???</span>
+    <span class="navbar-brand">Sputnik IDE</span>
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
-            {% for url, name in menu %}
+            {% for name, url in menu %}
                 <li><a class="nav-link" href="{{ url }}">{{ name }}</a></li>
             {% endfor %}
         {% if user.is_authenticated %}
             {% if user.is_superuser %}
-                {% for url, name in admin_menu %}
+                {% for name, url in admin_menu %}
                     <li><a class="nav-link" href="{{ url }}">{{ name }}</a></li>
                 {% endfor %}
             {% endif %}
@@ -42,7 +42,7 @@
 </main>
 
 <footer class="container pt-4 my-md-5 border-top">
-    <p>© Company 2019</p>
+    <p>© MIEM HSE 2019</p>
 </footer>
 {% endblock %}
 

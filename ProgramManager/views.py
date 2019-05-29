@@ -13,11 +13,11 @@ def get_base_context(pagetitle=''):
     return {
         'pagetitle': pagetitle,
         'menu': [
-            ('', 'Главная'),
-            ('/projects/', 'Проекты'),
+            ('Главная', '/'),
+            ('Проекты', '/projects/'),
         ],
         'admin_menu': [
-            ('', 'Список пользователей'),
+            ('Список пользователей', ''),
         ]
     }
 

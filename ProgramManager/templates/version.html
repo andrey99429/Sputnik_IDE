@@ -1,4 +1,47 @@
 {% extends 'base.html' %}
-{% block content %}
-    version.html
+{% block script %}
+    {% load static %}
+    <script src="{% static 'monaco-editor/min/vs/loader.js' %}"></script>
+    <script>
+        /*require.config({ paths: { 'vs': '{% static "monaco-editor/min/vs/" %}' }});
+        require(['vs/editor/editor.main'], function() {
+        var editor = monaco.editor.create(document.getElementById('container'), {
+            value: ["void main() {", '\tcout << "Hi!" << endl;', "}"].join('\n'),
+            language: "cpp"
+        });
+        });*/
+    </script>
+{% endblock %}
+
+{% block style %}
+    <style>
+        .left {
+            height: calc(100vh - 56px);
+        }
+        .right {
+            height: calc(100vh - 56px);
+        }
+    </style>
+{% endblock %}
+
+{% block over_content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3 left">
+                <div class="card">
+                    <div class="card-header">
+                        Featured
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Специальный заголовок</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                        <a href="#" class="btn btn-primary">Переход куда-нибудь</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-9 right">
+                2
+            </div>
+        </div>
+    </div>
 {% endblock %}
