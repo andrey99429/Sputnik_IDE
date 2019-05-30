@@ -22,3 +22,10 @@ class Project_Form(forms.Form):
                     'class': class_attr + ' ' + self.valid_css_class
                 })
         return res
+
+
+class Version_Loading(forms.Form):
+    code = forms.CharField()
+    new_version = forms.BooleanField(required=False)
+    build = forms.BooleanField(required=False)
+    run = forms.BooleanField(required=False)

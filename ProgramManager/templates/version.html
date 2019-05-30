@@ -3,23 +3,53 @@
     {% load static %}
     <script src="{% static 'monaco-editor/min/vs/loader.js' %}"></script>
     <script>
-        /*require.config({ paths: { 'vs': '{% static "monaco-editor/min/vs/" %}' }});
+        var project_id = {{ project_id }};
+        var version_id = {{ version_id }};
+        var version_code = '{% autoescape off %}{{ version_code|escapejs }}{% endautoescape %}';
+        var version_loading_url = "{% url 'version_loading' project_id version_id %}";
+        var editor;
+        require.config({ paths: { 'vs': '{% static "monaco-editor/min/vs/" %}' }});
         require(['vs/editor/editor.main'], function() {
-        var editor = monaco.editor.create(document.getElementById('container'), {
-            value: ["void main() {", '\tcout << "Hi!" << endl;', "}"].join('\n'),
-            language: "cpp"
+            editor = monaco.editor.create(document.getElementById('monaco-editor'), {
+                value: version_code,
+                language: "cpp"
+            });
         });
-        });*/
     </script>
+    <script src="{% static 'version.js' %}"></script>
 {% endblock %}
 
 {% block style %}
     <style>
-        .left {
+        .full-height {
             height: calc(100vh - 56px);
+            box-sizing: border-box;
+            padding-top: 6px;
         }
-        .right {
-            height: calc(100vh - 56px);
+        .version-bar {
+            box-sizing: border-box;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            height: 48px;
+        }
+        .editor {
+            box-sizing: border-box;
+            height: 50%;
+        }
+        .button-bar {
+            box-sizing: border-box;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            height: 48px;
+        }
+        .console {
+            box-sizing: border-box;
+            height: calc(50% - (48px + 48px + 2px));
+            margin-bottom: 2px;
+        }
+        .button-aling {
+            margin-top: 6px;
+            margin-bottom: 0;
         }
     </style>
 {% endblock %}
@@ -27,7 +57,8 @@
 {% block over_content %}
     <div class="container-fluid">
         <div class="row">
-            <div class="col-3 left">
+            <div class="col-3 full-height">
+                <h5>Проект</h5>
                 <div class="card">
                     <div class="card-header">
                         Featured
@@ -39,8 +70,26 @@
                     </div>
                 </div>
             </div>
-            <div class="col-9 right">
-                2
+
+            <div class="col-9 full-height">
+                {% csrf_token %}
+                <div class="version-bar">
+                    <div class="float-left">
+                        <h5 class="button-aling">Версия v{{ version_id }}</h5>
+                    </div>
+                    <div class="float-right">
+                        <button type="button" class="btn btn-primary" id="save_as_new">Save as New</button>
+                        <button type="button" class="btn btn-primary" id="save">Save</button>
+                        <button type="button" class="btn btn-primary" id="build">Build</button>
+                        <button type="button" class="btn btn-primary" id="build_and_run">Build and Run</button>
+                    </div>
+                </div>
+                <div class="editor border" id="monaco-editor"></div>
+                <div class="button-bar">
+                    <button type="button" class="btn btn-primary">Главный</button>
+                </div>
+                <div class="console border" id="console">
+                </div>
             </div>
         </div>
     </div>

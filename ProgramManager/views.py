@@ -1,12 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.http import Http404
+from django.http import JsonResponse, Http404
 from django.urls import reverse
 
-from program_manager.settings import PROJECTS_BASE_DIR
 from ProgramManager.models import Project, Version, User
-from ProgramManager.forms import Project_Form
-from ProgramManager.BuildRun import BuildRun
+from ProgramManager.forms import Project_Form, Version_Loading
 
 
 def get_base_context(pagetitle=''):
@@ -86,9 +84,62 @@ def project_delete(request, project_id):
 
 
 @login_required
-def version(request, project_id, version_id=None):
+def version_editor(request, project_id, version_id=None):
     context = get_base_context('IDE')
+
+    if not Project.objects.filter(id=project_id).exists() or Project.objects.get(id=project_id).author != request.user:
+        raise Http404
+
+    if version_id is None:
+        if Version.objects.filter(project_id=project_id).exists():
+            version = Version.objects.order_by('-creation_time').first()
+            version_id = version.id
+        else:
+            version = Version(project_id=project_id)
+            version.init()
+            version.save()
+            version_id = version.id
+
+    elif not Version.objects.filter(id=version_id).exists() or \
+            Version.objects.get(id=version_id).project_id != project_id or \
+            Version.objects.get(id=version_id).project.author != request.user:
+        raise Http404
+
+    version = Version.objects.get(id=version_id)
+    code = version.get_code()
+    context['project_id'] = project_id
+    context['version_id'] = version_id
+    context['version_code'] = code
+
     return render(request, 'version.html', context)
+
+
+@login_required
+def version_loading(request, project_id, version_id):
+    """
+    'code': editor.getValue(),
+    'new_version': new_version,
+    'build': build,
+    'run': run
+    """
+    if not Project.objects.filter(id=project_id).exists() or Project.objects.get(id=project_id).author != request.user:
+        raise Http404
+
+    if not Version.objects.filter(id=version_id).exists() or \
+            Version.objects.get(id=version_id).project_id != project_id or \
+            Version.objects.get(id=version_id).project.author != request.user:
+        raise Http404
+
+    if request.method == 'POST':
+        form = Version_Loading(request.POST)
+        if form.is_valid():
+            context = {'done': True}
+            # print(form.cleaned_data['code'])
+            return JsonResponse(context)
+        else:
+            raise Http404
+    else:
+        raise Http404
 
 
 """
