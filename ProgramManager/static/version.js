@@ -21,7 +21,7 @@ function load(new_version, build, run) {
             $(buttons[button]).prop('disabled', false);
         }
         console.log(msg);
-        //$("#console").html(msg);
+        $("#console").html(msg['run_out']);
     });
     request.fail(function(jqXHR, textStatus) {
         for (var button in buttons) {

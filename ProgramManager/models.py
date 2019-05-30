@@ -1,6 +1,7 @@
 import os
 import datetime
 from django.db import models
+from subprocess import Popen, PIPE
 from django.contrib.auth.models import User
 from program_manager.settings import PROJECTS_BASE_DIR
 
@@ -79,10 +80,24 @@ class Version(models.Model):
             file.close()
 
     def build(self):
-        pass
+        process = Popen(args='gcc -o {} {} -lstdc++'.format(self.exec_path(), self.code_path()),
+                        stdout=PIPE,
+                        stderr=PIPE,
+                        universal_newlines=True,
+                        shell=True)
+        out, err = process.communicate()
+        return out, err
 
     def run(self):
-        pass
+        process = Popen(args='{}'.format(self.exec_path()),
+                        stdin=PIPE,
+                        stdout=PIPE,
+                        stderr=PIPE,
+                        universal_newlines=True,
+                        shell=True)
+        # process.stdin.write('')
+        out, err = process.communicate()
+        return out, err
 
 
 default_code = '#include <iostream>\nusing namespace std;\n\n' \
@@ -92,9 +107,6 @@ default_code = '#include <iostream>\nusing namespace std;\n\n' \
 
 
 '''
-from subprocess import Popen, PIPE
-
-
 class BuildRun:
     def __init__(self, file_path, exec_path):
         # program: Program

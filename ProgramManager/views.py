@@ -116,12 +116,6 @@ def version_editor(request, project_id, version_id=None):
 
 @login_required
 def version_loading(request, project_id, version_id):
-    """
-    'code': editor.getValue(),
-    'new_version': new_version,
-    'build': build,
-    'run': run
-    """
     if not Project.objects.filter(id=project_id).exists() or Project.objects.get(id=project_id).author != request.user:
         raise Http404
 
@@ -133,8 +127,21 @@ def version_loading(request, project_id, version_id):
     if request.method == 'POST':
         form = Version_Loading(request.POST)
         if form.is_valid():
-            context = {'done': True}
-            # print(form.cleaned_data['code'])
+            version = Version.objects.get(id=version_id)
+            context = {}
+            if form.cleaned_data['new_version']:
+                pass
+            else:
+                version.write_code(form.cleaned_data['code'])
+                context['saved'] = True
+            if form.cleaned_data['build']:
+                out, err = version.build()
+                context['build_out'] = out
+                context['build_err'] = err
+            if form.cleaned_data['run']:
+                out, err = version.run()
+                context['run_out'] = out
+                context['run_err'] = err
             return JsonResponse(context)
         else:
             raise Http404
