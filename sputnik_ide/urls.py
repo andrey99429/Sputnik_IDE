@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-import ProgramManager.views as views
+import SputnikIDE.views as views
 
 urlpatterns = [
     path('', views.index, name='index'),

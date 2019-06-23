@@ -15,7 +15,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ProgramManager.apps.ProgrammanagerConfig',
+    'SputnikIDE.apps.SputnikIDEConfig',
 ]
 
 MIDDLEWARE = [
@@ -28,12 +28,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'program_manager.urls'
+ROOT_URLCONF = 'sputnik_ide.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, '/ProgramManager/templates')]
+        'DIRS': [os.path.join(BASE_DIR, '/SputnikIDE/templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -47,7 +47,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'program_manager.wsgi.application'
+WSGI_APPLICATION = 'sputnik_ide.wsgi.application'
 
 DATABASES = {
     'default': {
@@ -84,5 +84,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'ProgramManager/static')
+    os.path.join(BASE_DIR, 'SputnikIDE/static')
 ]

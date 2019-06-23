@@ -3,7 +3,7 @@ import datetime
 from django.db import models
 from subprocess import Popen, PIPE
 from django.contrib.auth.models import User
-from program_manager.settings import PROJECTS_BASE_DIR
+from sputnik_ide.settings import PROJECTS_BASE_DIR
 
 
 class Project(models.Model):
@@ -51,8 +51,8 @@ class Version(models.Model):
     def init(self):
         self.creation_time = datetime.datetime.now()
         self.dir_name = '/v' + str(self.get_number())
-        self.code_name = '/code.cpp'
-        self.make_name = '/make'
+        self.code_name = '/main.cpp'
+        self.make_name = '/Makefile'
         self.exec_name = '/exec'
 
         self.create_dir()
@@ -106,34 +106,6 @@ default_code = '#include <iostream>\nusing namespace std;\n\n' \
                '}\n'
 
 
-'''
-class BuildRun:
-    def __init__(self, file_path, exec_path):
-        # program: Program
-        self.file_path = file_path
-        self.exec_path = exec_path
-
-    def build(self):
-        process = Popen(args='gcc -o {} {} -lstdc++'.format(self.exec_path, self.file_path),
-                        stdout=PIPE,
-                        stderr=PIPE,
-                        universal_newlines=True,
-                        shell=True)
-        out, err = process.communicate()
-        return out, err
-
-    def run(self):
-        process = Popen(args='{}'.format(self.exec_path),
-                        stdin=PIPE,
-                        stdout=PIPE,
-                        stderr=PIPE,
-                        universal_newlines=True,
-                        shell=True)
-        # process.stdin.write('')
-        out, err = process.communicate()
-        return out, err
-
-
 """
 Ex: Dialog (2-way) with a Popen()
 
@@ -161,8 +133,7 @@ while out:
       out = p.stdout.readline()
       continue
 
-out = p.stdout.readline()
+    out = p.stdout.readline()
 
 p.wait()
 """
-'''

@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse, Http404
 from django.urls import reverse
 
-from ProgramManager.models import Project, Version, User
-from ProgramManager.forms import Project_Form, Version_Loading
+from SputnikIDE.models import Project, Version, User
+from SputnikIDE.forms import Project_Form, Version_Loading
 
 
 def get_base_context(pagetitle=''):

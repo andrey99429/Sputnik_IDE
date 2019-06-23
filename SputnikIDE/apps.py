@@ -1,8 +1,8 @@
 from django.apps import AppConfig
 
 
-class ProgrammanagerConfig(AppConfig):
-    name = 'ProgramManager'
+class SputnikIDEConfig(AppConfig):
+    name = 'SputnikIDE'
 
     def ready(self):
         from django.contrib.auth.models import User
@@ -12,7 +12,7 @@ class ProgrammanagerConfig(AppConfig):
             user.save()
             print('Admin created')
 
-        from program_manager.settings import PROJECTS_BASE_DIR
+        from sputnik_ide.settings import PROJECTS_BASE_DIR
         import os
         if not os.path.isdir(PROJECTS_BASE_DIR):
             os.mkdir(PROJECTS_BASE_DIR)

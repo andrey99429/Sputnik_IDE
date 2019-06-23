@@ -1,9 +1,9 @@
 #!/bin/bash
 cd ~/Documents/
-git clone https://github.com/andrey99429/Program_Manager.git
+git clone https://github.com/andrey99429/Sputnik_IDE.git
 
-if [ -d Program_Manager/ ]; then
-cd Program_Manager/
+if [ -d Sputnik_IDE/ ]; then
+cd Sputnik_IDE/
 
 pip install virtualenv
 python3 -m venv venv
