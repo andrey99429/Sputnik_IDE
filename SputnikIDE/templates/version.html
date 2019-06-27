@@ -46,10 +46,40 @@
             box-sizing: border-box;
             height: calc(50% - (48px + 48px + 2px));
             margin-bottom: 2px;
+            font-family: "Lucida Console", Monaco, monospace;
+            font-size: 12px;
+            letter-spacing: 0;
+            word-spacing: 1px;
+            color: #000000;
+            font-weight: 400;
+            font-style: normal;
+            font-variant: normal;
+            text-transform: none;
+            overflow-y: scroll;
         }
         .button-aling {
             margin-top: 6px;
             margin-bottom: 0;
+        }
+        .version-list {
+            box-sizing: border-box;
+            background-color: #5b80b2;
+            height: calc(50% - 32px);
+            overflow-y: scroll;
+        }
+        .response-status {
+            box-sizing: border-box;
+            height: 50%;
+            overflow-y: scroll;
+        }
+        .response-status .alert {
+            margin-bottom: 4px;
+            margin-right: 4px;
+            padding: 6px 36px 6px 10px;
+            font-size: 14px;
+        }
+        .response-status .alert .close {
+            padding: 3px 10px 8px;
         }
     </style>
 {% endblock %}
@@ -59,7 +89,7 @@
         <div class="row">
             <div class="col-3 full-height">
                 <h5>Проект</h5>
-                <div class="card">
+                <!--<div class="card">
                     <div class="card-header">
                         Featured
                     </div>
@@ -68,14 +98,20 @@
                         <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
                         <a href="#" class="btn btn-primary">Переход куда-нибудь</a>
                     </div>
+                </div>-->
+                <div class="version-list">
+
+                </div>
+                <div class="response-status">
+                    <h5>Статус</h5>
                 </div>
             </div>
 
-            <div class="col-9 full-height">
+            <div class="col-9 full-height" style="padding-right: 10px;">
                 {% csrf_token %}
                 <div class="version-bar">
                     <div class="float-left">
-                        <h5 class="button-aling">Версия v{{ version_id }}</h5>
+                        <h5 class="button-aling">Версия v{{ version_number }}</h5>
                     </div>
                     <div class="float-right">
                         <button type="button" class="btn btn-primary" id="save_as_new">Save as New</button>
@@ -86,7 +122,7 @@
                 </div>
                 <div class="editor border" id="monaco-editor"></div>
                 <div class="button-bar">
-                    <button type="button" class="btn btn-primary">Главный</button>
+                    <h5 class="button-aling">Консоль</h5>
                 </div>
                 <div class="console border" id="console">
                 </div>

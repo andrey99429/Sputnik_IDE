@@ -29,3 +29,7 @@ class Version_Loading(forms.Form):
     new_version = forms.BooleanField(required=False)
     build = forms.BooleanField(required=False)
     run = forms.BooleanField(required=False)
+
+
+class Project_Delete(forms.Form):
+    to_delete = forms.IntegerField(initial=1, widget=forms.HiddenInput())

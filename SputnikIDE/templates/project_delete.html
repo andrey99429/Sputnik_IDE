@@ -1,4 +1,16 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+     <link href="{% static 'login.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-    project_delete.html
+    <form class="form-signin" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <h1 class="h3 mb-3 font-weight-normal">{{ text }}</h1>
+        <input type="submit" class="btn btn-outline-danger btn-lg btn-block" value="Удалить">
+        <a class="btn btn-outline-secondary btn-lg btn-block" href="{{ cancel_link }}" role="button">Отмена</a>
+    </form>
 {% endblock %}

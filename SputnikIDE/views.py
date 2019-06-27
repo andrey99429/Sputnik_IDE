@@ -3,8 +3,9 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse, Http404
 from django.urls import reverse
 
+from sputnik_ide.settings import PROJECTS_BASE_DIR
 from SputnikIDE.models import Project, Version, User
-from SputnikIDE.forms import Project_Form, Version_Loading
+from SputnikIDE.forms import Project_Form, Version_Loading, Project_Delete
 
 
 def get_base_context(pagetitle=''):
@@ -80,6 +81,25 @@ def project_edit(request, project_id=None):
 @login_required
 def project_delete(request, project_id):
     context = get_base_context('Удаление проекта')
+
+    if not Project.objects.filter(id=project_id).exists() or Project.objects.get(id=project_id).author != request.user:
+        raise Http404
+
+    form = None
+
+    if request.method == 'POST':
+        form = Project_Delete(request.POST)
+        if form.is_valid():
+            Project.objects.get(id=project_id).delete()
+            return redirect(reverse('projects'))
+    else:
+        form = Project_Delete()
+
+    context['text'] = 'Вы уверены, что ходите удалить проект {}?'.format(Project.objects.get(id=project_id).name)
+    # context['cancel_link'] = reverse('project', kwargs={'project_id':project_id})
+    context['cancel_link'] = reverse('projects')
+    context['form'] = form
+
     return render(request, 'project_delete.html', context)
 
 
@@ -109,6 +129,7 @@ def version_editor(request, project_id, version_id=None):
     code = version.get_code()
     context['project_id'] = project_id
     context['version_id'] = version_id
+    context['version_number'] = version.get_number()
     context['version_code'] = code
 
     return render(request, 'version.html', context)
@@ -116,6 +137,12 @@ def version_editor(request, project_id, version_id=None):
 
 @login_required
 def version_loading(request, project_id, version_id):
+    def style(string: str):
+        string = string.replace('\n', '<br>')
+        string = string.replace(' ', '&nbsp;')
+        string = string.replace(PROJECTS_BASE_DIR, '')
+        return string
+
     if not Project.objects.filter(id=project_id).exists() or Project.objects.get(id=project_id).author != request.user:
         raise Http404
 
@@ -136,12 +163,12 @@ def version_loading(request, project_id, version_id):
                 context['saved'] = True
             if form.cleaned_data['build']:
                 out, err = version.build()
-                context['build_out'] = out
-                context['build_err'] = err
+                context['build_out'] = style(out)
+                context['build_err'] = style(err)
             if form.cleaned_data['run']:
                 out, err = version.run()
-                context['run_out'] = out
-                context['run_err'] = err
+                context['run_out'] = style(out)
+                context['run_err'] = style(err)
             return JsonResponse(context)
         else:
             raise Http404

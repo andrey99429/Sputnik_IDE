@@ -18,6 +18,12 @@ class Project(models.Model):
         if not os.path.isdir(self.dir_path()):
             os.mkdir(self.dir_path())
 
+    def delete(self, using=None, keep_parents=False):
+        for version in Version.objects.filter(project_id=self.id):
+            version.delete()
+        super().delete(using, keep_parents)
+        os.rmdir(self.dir_path())
+
 
 class Version(models.Model):
     project = models.ForeignKey(Project, on_delete=models.PROTECT)
@@ -28,6 +34,10 @@ class Version(models.Model):
     creation_time = models.DateTimeField()
     upload_time = models.DateTimeField(null=True)
     compile_time = models.DateTimeField(null=True)
+
+    @staticmethod
+    def default_code_path():
+        return PROJECTS_BASE_DIR + '/default.cpp'
 
     def get_number(self):
         return Version.objects.filter(project=self.project, creation_time__lt=self.creation_time).count() + 1
@@ -56,7 +66,7 @@ class Version(models.Model):
         self.exec_name = '/exec'
 
         self.create_dir()
-        self.write_code(default_code)
+        self.default_code()
 
     def delete(self, using=None, keep_parents=False):
         for root, dirs, files in os.walk(self.dir_path(), topdown=False):
@@ -67,6 +77,9 @@ class Version(models.Model):
         os.rmdir(self.dir_path())
 
         super().delete(using, keep_parents)
+
+    def default_code(self):
+        os.system('cp {} {}'.format(self.default_code_path(), self.code_path()))
 
     def get_code(self):
         with open(self.code_path(), 'r') as file:
@@ -98,12 +111,6 @@ class Version(models.Model):
         # process.stdin.write('')
         out, err = process.communicate()
         return out, err
-
-
-default_code = '#include <iostream>\nusing namespace std;\n\n' \
-               'int main() {\n' \
-               '\tcout << "Hello World!" << endl;\n' \
-               '}\n'
 
 
 """
