@@ -10,14 +10,17 @@ function create_alert(type, text) {
 }
 
 function parse_response(response) {
+    if (response['redirect']) {
+        document.location.replace(document.location.origin + response['redirect_url']);
+        return 0;
+    }
+
     var date = new Date();
     var time_str = '[' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + '] ';
     var success_text = time_str;
     var danger_text = time_str;
     var console_log = $('#console');
     console_log.html(' ');
-
-    console.log(response);
 
     if (response['saved']) {
         success_text += '<br></be><strong>Версия сохранена.</strong>';

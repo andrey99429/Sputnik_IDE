@@ -15,4 +15,5 @@ urlpatterns = [
     path('project/<int:project_id>/', views.version_editor, name='project'),
     path('project/<int:project_id>/version/<int:version_id>/', views.version_editor, name='version'),
     path('project/<int:project_id>/version/<int:version_id>/load/', views.version_loading, name='version_loading'),
+    path('project/<int:project_id>/version/<int:version_id>/delete/', views.version_delete, name='version_delete'),
 ]

@@ -66,7 +66,7 @@
         }
         .version-list {
             box-sizing: border-box;
-            height: calc(50% - 32px);
+            height: calc(50% - 64px);
             overflow-y: scroll;
         }
         .response-status {
@@ -83,6 +83,9 @@
         .response-status .alert .close {
             padding: 3px 10px 8px;
         }
+        .list-group-item {
+            padding: 6px 10px;
+        }
     </style>
 {% endblock %}
 
@@ -92,14 +95,14 @@
             <div class="col-3 full-height">
                 <h5>Проект {{ project_name }}</h5>
                 <div class="version-list list-group">
-                    <a href="#" class="list-group-item list-group-item-action active">Cras justo odio</a>
-                    <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-                    <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-                    <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+                    {% for version in versions %}
+                        <a href="{% url 'version' project_id version.id %}"
+                           class="list-group-item list-group-item-action {% if version.id == version_id %} active {% endif %}">
+                            <b>{{ version.name }}</b> ({{ version.upload_time }})</a>
+                    {% endfor %}
                 </div>
-                <div class="response-status">
-                    <h5>Статус</h5>
-                </div>
+                <h5>Статус</h5>
+                <div class="response-status"></div>
             </div>
 
             <div class="col-9 full-height" style="padding-right: 10px;">
@@ -116,8 +119,14 @@
                     </div>
                 </div>
                 <div class="editor border" id="monaco-editor"></div>
+
                 <div class="button-bar">
-                    <h5 class="button-aling">Консоль</h5>
+                    <div class="float-left">
+                        <h5 class="button-aling">Консоль</h5>
+                    </div>
+                    <div class="float-right">
+                        <a href="{% url 'version_delete' project_id version_id %}" class="btn btn-outline-danger" role="button">Удалить</a>
+                    </div>
                 </div>
                 <div class="console border" id="console">
                 </div>

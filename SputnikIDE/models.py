@@ -1,9 +1,9 @@
-import os
-import datetime
-from django.db import models
+from sputnik_ide.settings import PROJECTS_BASE_DIR
 from subprocess import Popen, PIPE, TimeoutExpired
 from django.contrib.auth.models import User
-from sputnik_ide.settings import PROJECTS_BASE_DIR
+from django.utils import timezone
+from django.db import models
+import os
 
 
 class Project(models.Model):
@@ -59,7 +59,7 @@ class Version(models.Model):
             os.mkdir(self.dir_path())
 
     def init(self):
-        self.creation_time = datetime.datetime.now()
+        self.creation_time = timezone.now()
         self.dir_name = '/v' + str(self.get_number())
         self.code_name = '/main.cpp'
         self.make_name = '/Makefile'
