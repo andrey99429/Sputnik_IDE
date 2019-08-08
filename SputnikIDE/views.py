@@ -7,6 +7,8 @@ from sputnik_ide.settings import PROJECTS_BASE_DIR
 from SputnikIDE.models import Project, Version, User
 from SputnikIDE.forms import Project_Form, Version_Loading, Project_Delete
 
+import datetime
+
 
 def get_base_context(pagetitle=''):
     return {
@@ -29,7 +31,17 @@ def index(request):
 @login_required
 def projects(request):
     context = get_base_context('Список проектов')
-    context['projects'] = Project.objects.all()
+    context['projects'] = Project.objects.filter(author=request.user).values('id', 'name')
+
+    for i in range(len(context['projects'])):
+        last_version = Project.objects.get(id=context['projects'][i]['id']).version_set.order_by('-creation_time')
+        if last_version.exists():
+            last_version = last_version.first()
+            context['projects'][i]['last_version'] = last_version.upload_time
+            context['projects'][i]['upload_time'] = 'v' + str(last_version.id)
+
+    print(context['projects'])
+
     return render(request, 'projects.html', context)
 
 
@@ -155,8 +167,9 @@ def version_loading(request, project_id, version_id):
             version = Version.objects.get(id=version_id)
             context = {}
             if form.cleaned_data['new_version']:
-                pass
+                pass  # create new version + version.upload_time = datetime.datetime.now()
             else:
+                version.upload_time = datetime.datetime.now()
                 version.write_code(form.cleaned_data['code'])
                 context['saved'] = True
             if form.cleaned_data['build']:
@@ -167,6 +180,8 @@ def version_loading(request, project_id, version_id):
                 out, err = version.run()
                 context['run_out'] = style(out)
                 context['run_err'] = style(err)
+
+            version.save()
             return JsonResponse(context)
         else:
             raise Http404
