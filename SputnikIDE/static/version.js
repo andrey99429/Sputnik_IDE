@@ -10,33 +10,33 @@ function create_alert(type, text) {
 }
 
 function parse_response(response) {
-    /*
-    saved
-    build_out
-    build_err
-
-    run_out
-    run_err
-     */
-    // $("#console").html(msg['run_out']);
     var date = new Date();
-    var time_str = "[" + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + "] ";
+    var time_str = '[' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + '] ';
+    var success_text = time_str;
+    var danger_text = time_str;
     $('#console').html(' ');
 
     if (response['saved']) {
-        $('.response-status').append(create_alert('success', time_str+'<strong>Версия сохранена!</strong>'));
+        success_text += '<br></be><strong>Версия сохранена.</strong>';
     } else {
-        $('.response-status').append(create_alert('danger', time_str+'<strong>Ошибка!</strong> Версия не сохранена.'));
+        danger_text += '<br><strong>Ошибка!</strong> Версия не сохранена.';
     }
 
+    $('#console').append(response['build_out']);
     if (response['build_err']) {
+        danger_text += '<br><strong>Ошибка!</strong> Build error.';
         $('#console').append(response['build_err']);
     } else {
+        success_text += '<br><strong>Build successful.</strong>';
         $('#console').append(response['run_out']);
         $('#console').append(response['run_err']);
     }
-
-    console.log(response);
+    if (success_text !== time_str) {
+        $('.response-status').append(create_alert('success', success_text));
+    }
+    if (danger_text !== time_str) {
+        $('.response-status').append(create_alert('danger', danger_text));
+    }
 }
 
 function load(new_version, build, run) {

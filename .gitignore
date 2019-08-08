@@ -1,3 +1,4 @@
 .idea/
 __pycache__/
 venv/
+SputnikIDE/static/monaco-editor/*

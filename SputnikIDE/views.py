@@ -105,7 +105,8 @@ def project_delete(request, project_id):
 
 @login_required
 def version_editor(request, project_id, version_id=None):
-    context = get_base_context('IDE')
+    context = get_base_context('Project Editor')
+    version = None
 
     if not Project.objects.filter(id=project_id).exists() or Project.objects.get(id=project_id).author != request.user:
         raise Http404
@@ -113,24 +114,21 @@ def version_editor(request, project_id, version_id=None):
     if version_id is None:
         if Version.objects.filter(project_id=project_id).exists():
             version = Version.objects.order_by('-creation_time').first()
-            version_id = version.id
         else:
             version = Version(project_id=project_id)
             version.init()
             version.save()
-            version_id = version.id
 
     elif not Version.objects.filter(id=version_id).exists() or \
             Version.objects.get(id=version_id).project_id != project_id or \
             Version.objects.get(id=version_id).project.author != request.user:
         raise Http404
 
-    version = Version.objects.get(id=version_id)
-    code = version.get_code()
+    context['project_name'] = Project.objects.get(id=project_id).name
     context['project_id'] = project_id
-    context['version_id'] = version_id
+    context['version_id'] = version.id
     context['version_number'] = version.get_number()
-    context['version_code'] = code
+    context['version_code'] = version.get_code()
 
     return render(request, 'version.html', context)
 
@@ -174,31 +172,3 @@ def version_loading(request, project_id, version_id):
             raise Http404
     else:
         raise Http404
-
-
-"""
-if request.method == 'POST':
-    form = FileLoading(request.POST, request.FILES)
-    if form.is_valid():
-        file_path = BASE_DIR + '/temp.cpp'
-        exec_path = BASE_DIR + '/temp'
-        if os.path.exists(file_path):
-            os.remove(file_path)
-        if os.path.exists(exec_path):
-            os.remove(exec_path)
-
-        with open(file_path, 'wb+') as destination:
-            for chuck in request.FILES['file'].chunks():
-                destination.write(chuck)
-
-        br = BuildRun(file_path, exec_path)
-        out, err = br.build()
-        context['build'] = 'out:<br>{}<br>err:<br>{}'.format(out, err.replace('\n', '<br>'))
-        out, err = br.run()
-        context['run'] = 'out:<br>{}<br>err:<br>{}'.format(out, err)
-    else:
-        print('is not valid')
-else:
-    context['form'] = FileLoading()
-return render(request, 'index.html', context)
-"""

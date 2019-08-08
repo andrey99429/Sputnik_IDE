@@ -63,7 +63,6 @@
         }
         .version-list {
             box-sizing: border-box;
-            background-color: #5b80b2;
             height: calc(50% - 32px);
             overflow-y: scroll;
         }
@@ -88,19 +87,12 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-3 full-height">
-                <h5>Проект</h5>
-                <!--<div class="card">
-                    <div class="card-header">
-                        Featured
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Специальный заголовок</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-primary">Переход куда-нибудь</a>
-                    </div>
-                </div>-->
-                <div class="version-list">
-
+                <h5>Проект {{ project_name }}</h5>
+                <div class="version-list list-group">
+                    <a href="#" class="list-group-item list-group-item-action active">Cras justo odio</a>
+                    <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
+                    <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
+                    <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
                 </div>
                 <div class="response-status">
                     <h5>Статус</h5>
