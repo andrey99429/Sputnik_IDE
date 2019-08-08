@@ -1,7 +1,7 @@
 import os
 import datetime
 from django.db import models
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, TimeoutExpired
 from django.contrib.auth.models import User
 from sputnik_ide.settings import PROJECTS_BASE_DIR
 
@@ -109,5 +109,10 @@ class Version(models.Model):
                         universal_newlines=True,
                         shell=True)
         # process.stdin.write('')
-        out, err = process.communicate()
-        return out, err
+        try:
+            out, err = process.communicate(timeout=10)
+        except TimeoutExpired:
+            process.kill()
+            out, err = process.communicate()
+
+        return out, err, process.returncode

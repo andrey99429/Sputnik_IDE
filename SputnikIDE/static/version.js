@@ -14,7 +14,10 @@ function parse_response(response) {
     var time_str = '[' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + '] ';
     var success_text = time_str;
     var danger_text = time_str;
-    $('#console').html(' ');
+    var console_log = $('#console');
+    console_log.html(' ');
+
+    console.log(response);
 
     if (response['saved']) {
         success_text += '<br></be><strong>Версия сохранена.</strong>';
@@ -22,15 +25,27 @@ function parse_response(response) {
         danger_text += '<br><strong>Ошибка!</strong> Версия не сохранена.';
     }
 
-    $('#console').append(response['build_out']);
-    if (response['build_err']) {
-        danger_text += '<br><strong>Ошибка!</strong> Build error.';
-        $('#console').append(response['build_err']);
-    } else {
-        success_text += '<br><strong>Build successful.</strong>';
-        $('#console').append(response['run_out']);
-        $('#console').append(response['run_err']);
+    if (response['build_required']) {
+        console_log.append(response['build_out']);
+        if (response['build_err']) {
+            danger_text += '<br><strong>Ошибка!</strong> Build error.';
+            $('#console').append(response['build_err']);
+        } else {
+            success_text += '<br><strong>Build successful.</strong>';
+        }
     }
+
+    if (response['run_required']) {
+        console_log.append(response['run_out']);
+        if (response['run_err'] || response['returncode'] !== 0) {
+            danger_text += '<br><strong>Ошибка!</strong> Runtime error.';
+            console_log.append(response['run_err']);
+        } else {
+            success_text += '<br><strong>Run successful.</strong>';
+        }
+        console_log.append('<span class="returncode">Process finished with exit code ' + response['returncode'] + '</span>');
+    }
+
     if (success_text !== time_str) {
         $('.response-status').append(create_alert('success', success_text));
     }

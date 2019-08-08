@@ -1,8 +1,10 @@
 #include <iostream>
+
 using namespace std;
 
 int main() {
+    cout << "Hi" << endl;
     cout << "Hello World!" << endl;
-    int a = 2;
-    int i = 2;
+
+    return 0;
 }

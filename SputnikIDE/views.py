@@ -172,14 +172,20 @@ def version_loading(request, project_id, version_id):
                 version.upload_time = datetime.datetime.now()
                 version.write_code(form.cleaned_data['code'])
                 context['saved'] = True
+
+            context['build_required'] = form.cleaned_data['build']
             if form.cleaned_data['build']:
                 out, err = version.build()
                 context['build_out'] = style(out)
                 context['build_err'] = style(err)
+
+            context['run_required'] = form.cleaned_data['run']
             if form.cleaned_data['run']:
-                out, err = version.run()
+                out, err, returncode = version.run()
+
                 context['run_out'] = style(out)
                 context['run_err'] = style(err)
+                context['returncode'] = -1 * returncode
 
             version.save()
             return JsonResponse(context)
