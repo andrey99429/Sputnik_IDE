@@ -17,7 +17,7 @@
     {% for project in projects %}
         <tr>
             <td>{{ project.name }}</td>
-            <td>{{ project.upload_time }}</td>
+            <td>{{ project.upload_time|default_if_none:'created automatically' }}</td>
             <td>{{ project.last_version }}</td>
             <td><a href="{% url 'project' project.id %}" role="button" class="btn btn-link p-0">Работать с проектом</a></td>
             <td><a href="{% url 'project_edit' project.id %}" role="button" class="btn btn-link p-0">Редактировать</a></td>

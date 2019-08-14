@@ -1,4 +1,4 @@
-from sputnik_ide.settings import PROJECTS_BASE_DIR
+from sputnik_ide.settings import PROJECTS_BASE_DIR, DEFAULT_CODE_PATH
 from subprocess import Popen, PIPE, TimeoutExpired
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -34,10 +34,6 @@ class Version(models.Model):
     creation_time = models.DateTimeField()
     upload_time = models.DateTimeField(null=True)
     compile_time = models.DateTimeField(null=True)
-
-    @staticmethod
-    def default_code_path():
-        return PROJECTS_BASE_DIR + '/default.cpp'
 
     def get_number(self):
         return Version.objects.filter(project=self.project, creation_time__lt=self.creation_time).count() + 1
@@ -79,7 +75,7 @@ class Version(models.Model):
         super().delete(using, keep_parents)
 
     def default_code(self):
-        os.system('cp {} {}'.format(self.default_code_path(), self.code_path()))
+        os.system('cp {} {}'.format(DEFAULT_CODE_PATH, self.code_path()))
 
     def get_code(self):
         with open(self.code_path(), 'r') as file:

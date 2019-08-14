@@ -98,7 +98,7 @@
                     {% for version in versions %}
                         <a href="{% url 'version' project_id version.id %}"
                            class="list-group-item list-group-item-action {% if version.id == version_id %} active {% endif %}">
-                            <b>{{ version.name }}</b> ({{ version.upload_time }})</a>
+                            <b>{{ version.name }}</b> ({{ version.upload_time|default_if_none:'created automatically' }})</a>
                     {% endfor %}
                 </div>
                 <h5>Статус</h5>

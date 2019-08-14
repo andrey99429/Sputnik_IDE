@@ -17,7 +17,7 @@ def get_base_context(pagetitle=''):
             ('Проекты', '/projects/'),
         ],
         'admin_menu': [
-            ('Список пользователей', ''),
+           # ('Список пользователей', ''),
         ]
     }
 
@@ -88,31 +88,6 @@ def project_edit(request, project_id=None):
 
 
 @login_required
-def project_delete(request, project_id):
-    context = get_base_context('Удаление проекта')
-
-    if not Project.objects.filter(id=project_id).exists() or Project.objects.get(id=project_id).author != request.user:
-        raise Http404
-
-    form = None
-
-    if request.method == 'POST':
-        form = Project_Delete(request.POST)
-        if form.is_valid():
-            Project.objects.get(id=project_id).delete()
-            return redirect(reverse('projects'))
-    else:
-        form = Project_Delete()
-
-    context['text'] = 'Вы уверены, что ходите удалить проект {}?'.format(Project.objects.get(id=project_id).name)
-    # context['cancel_link'] = reverse('project', kwargs={'project_id':project_id})
-    context['cancel_link'] = reverse('projects')
-    context['form'] = form
-
-    return render(request, 'project_delete.html', context)
-
-
-@login_required
 def version_editor(request, project_id, version_id=None):
     context = get_base_context('Project Editor')
     version = None
@@ -122,7 +97,7 @@ def version_editor(request, project_id, version_id=None):
 
     if version_id is None:
         if Version.objects.filter(project_id=project_id).exists():
-            version = Version.objects.order_by('-creation_time').first()
+            version = Version.objects.filter(project_id=project_id).order_by('-creation_time').first()
         else:
             version = Version(project_id=project_id)
             version.init()
@@ -205,6 +180,31 @@ def version_loading(request, project_id, version_id):
             raise Http404
     else:
         raise Http404
+
+
+@login_required
+def project_delete(request, project_id):
+    context = get_base_context('Удаление проекта')
+
+    if not Project.objects.filter(id=project_id).exists() or Project.objects.get(id=project_id).author != request.user:
+        raise Http404
+
+    form = None
+
+    if request.method == 'POST':
+        form = Project_Delete(request.POST)
+        if form.is_valid():
+            Project.objects.get(id=project_id).delete()
+            return redirect(reverse('projects'))
+    else:
+        form = Project_Delete()
+
+    context['text'] = 'Вы уверены, что ходите удалить проект {}?'.format(Project.objects.get(id=project_id).name)
+    # context['cancel_link'] = reverse('project', kwargs={'project_id':project_id})
+    context['cancel_link'] = reverse('projects')
+    context['form'] = form
+
+    return render(request, 'project_delete.html', context)
 
 
 @login_required

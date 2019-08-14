@@ -2,6 +2,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECTS_BASE_DIR = BASE_DIR + '/Projects'
+DEFAULT_CODE_PATH = PROJECTS_BASE_DIR + '/default.cpp'
 
 SECRET_KEY = '!rqc7^ii_b_^(t70pz4v$7)f4l8!b)g&4an_zpuej-3y69cb2#'
 
