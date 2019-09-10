@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% block script %}
     {% load static %}
-    <script src="{% static 'monaco-editor/min/vs/loader.js' %}"></script>
+    <script src="{% static 'libraries/monaco-editor/min/vs/loader.js' %}"></script>
     <script>
         var project_id = {{ project_id }};
         var version_id = {{ version_id }};
         var version_code = '{% autoescape off %}{{ version_code|escapejs }}{% endautoescape %}';
         var version_loading_url = "{% url 'version_loading' project_id version_id %}";
         var editor;
-        require.config({ paths: { 'vs': '{% static "monaco-editor/min/vs/" %}' }});
+        require.config({ paths: { "vs": "{% static 'libraries/monaco-editor/min/vs/' %}" }});
         require(['vs/editor/editor.main'], function() {
             editor = monaco.editor.create(document.getElementById('monaco-editor'), {
                 value: version_code,
