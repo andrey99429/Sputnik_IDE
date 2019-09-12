@@ -15,12 +15,15 @@ pip3 install Django
 
 mkdir SputnikIDE/static/libraries/
 cd SputnikIDE/static/libraries/
-git clone https://github.com/microsoft/monaco-editor.git
 wget -O jquery.min.js "https://code.jquery.com/jquery-3.4.1.min.js"
 wget -O bootstrap.zip "https://github.com/twbs/bootstrap/releases/download/v4.3.1/bootstrap-4.3.1-dist.zip"
 unzip bootstrap.zip
 rm bootstrap.zip
 mv bootstrap-4.3.1-dist ./bootstrap
+wget monaco-editor.tgz "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.18.0.tgz"
+tar -xvzf monaco-editor.tgz
+rm monaco-editor.tgz
+mv package ./monaco-editor
 
 cd ../../../
 ./runserver
