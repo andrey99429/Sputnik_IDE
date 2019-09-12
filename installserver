@@ -1,9 +1,9 @@
 #!/bin/bash
-cd ~/
-git clone https://github.com/andrey99429/Sputnik_IDE.git
+# cd ~/
+# git clone https://github.com/andrey99429/Sputnik_IDE.git
 
-if [ -d Sputnik_IDE/ ]; then
-cd Sputnik_IDE/
+# if [ -d Sputnik_IDE/ ]; then
+# cd Sputnik_IDE/
 
 sudo pip3 install virtualenv
 virtualenv venv
@@ -21,9 +21,9 @@ wget -O bootstrap.zip "https://github.com/twbs/bootstrap/releases/download/v4.3.
 mkdir bootstrap
 unzip bootstrap.zip
 rm bootstrap.zip
-mv bootstrap-4.3.1-dist bootstrap
+mv bootstrap-4.3.1-dist ./bootstrap
 
 cd ../../../
 ./runserver
 
-fi
+# fi
