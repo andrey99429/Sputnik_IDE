@@ -96,8 +96,10 @@ class Version(models.Model):
         out, err = process.communicate()
         return out, err
 
+    run_cmd = '{} /dev/ttyUSB0'
+
     def run(self):
-        process = Popen(args='{}'.format(self.exec_path()),
+        process = Popen(args=Version.run_cmd.format(self.exec_path()),
                         stdin=PIPE,
                         stdout=PIPE,
                         stderr=PIPE,

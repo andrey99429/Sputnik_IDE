@@ -172,7 +172,7 @@ def version_loading(request, project_id, version_id):
 
                 context['run_out'] = style(out)
                 context['run_err'] = style(err)
-                context['returncode'] = -1 * returncode
+                context['returncode'] = abs(returncode)
 
             version.save()
             return JsonResponse(context)
