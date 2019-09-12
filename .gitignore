@@ -4,3 +4,4 @@ venv/
 SputnikIDE/static/libraries/
 Projects/
 !Projects/default.cpp
+!Projects/libschsat.h

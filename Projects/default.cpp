@@ -1,3 +1,4 @@
+#include "../../libschsat.h"
 #include <iostream>
 using namespace std;
 

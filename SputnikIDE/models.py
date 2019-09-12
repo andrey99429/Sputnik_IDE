@@ -44,9 +44,6 @@ class Version(models.Model):
     def code_path(self):
         return self.dir_path() + self.code_name
 
-    def make_path(self):
-        return self.dir_path() + self.make_name
-
     def exec_path(self):
         return self.dir_path() + self.exec_name
 
@@ -58,7 +55,6 @@ class Version(models.Model):
         self.creation_time = timezone.now()
         self.dir_name = '/v' + str(self.get_number())
         self.code_name = '/main.cpp'
-        self.make_name = '/Makefile'
         self.exec_name = '/exec'
 
         self.create_dir()
@@ -88,8 +84,9 @@ class Version(models.Model):
             file.write(code)
             file.close()
 
+    build_cmd = 'gcc -o {} {} -lstdc++ -Wall -I. -fpic -g -O2 -rdynamic -lm -lschsat -lschsat-dev -ldl'
     def build(self):
-        process = Popen(args='gcc -o {} {} -lstdc++'.format(self.exec_path(), self.code_path()),
+        process = Popen(args=Version.build_cmd.format(self.exec_path(), self.code_path()),
                         stdout=PIPE,
                         stderr=PIPE,
                         universal_newlines=True,
@@ -106,7 +103,7 @@ class Version(models.Model):
                         shell=True)
         # process.stdin.write('')
         try:
-            out, err = process.communicate(timeout=10)
+            out, err = process.communicate(timeout=300)
         except TimeoutExpired:
             process.kill()
             out, err = process.communicate()
