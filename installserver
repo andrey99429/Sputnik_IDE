@@ -19,9 +19,11 @@ git clone https://github.com/microsoft/monaco-editor.git
 wget -O jquery.min.js "https://code.jquery.com/jquery-3.4.1.min.js"
 wget -O bootstrap.zip "https://github.com/twbs/bootstrap/releases/download/v4.3.1/bootstrap-4.3.1-dist.zip"
 mkdir bootstrap
-unzip bootstrap.zip -d bootstrap
+unzip bootstrap.zip
 rm bootstrap.zip
+mv bootstrap-4.3.1-dist bootstrap
 
+cd ../../../
 ./runserver
 
 fi
