@@ -54,7 +54,7 @@ class Version(models.Model):
     def init(self):
         self.creation_time = timezone.now()
         self.dir_name = '/v' + str(self.get_number())
-        self.code_name = '/main.cpp'
+        self.code_name = '/main.c'
         self.exec_name = '/exec'
 
         self.create_dir()
