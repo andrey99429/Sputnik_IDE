@@ -84,9 +84,10 @@ class Version(models.Model):
             file.write(code)
             file.close()
 
-    build_cmd = 'gcc -o {} {} -lstdc++ -Wall -I. -fpic -g -O2 -rdynamic -lm -lschsat -lschsat-dev -ldl'
+    build_cmd = 'cc -Wall -I. -fpic -g -O2 -rdynamic -lm -lschsat -lschsat-dev -ldl {} -o {}'
+
     def build(self):
-        process = Popen(args=Version.build_cmd.format(self.exec_path(), self.code_path()),
+        process = Popen(args=Version.build_cmd.format(self.code_path(), self.exec_path()),
                         stdout=PIPE,
                         stderr=PIPE,
                         universal_newlines=True,
