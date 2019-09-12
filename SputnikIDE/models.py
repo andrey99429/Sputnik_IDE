@@ -87,7 +87,6 @@ class Version(models.Model):
     build_cmd = 'cc -Wall -I. -fpic -g -O2 -rdynamic -lm -lschsat -lschsat-dev -ldl {} -o {}'
 
     def build(self):
-        print(Version.build_cmd.format(self.code_path(), self.exec_path()))
         process = Popen(args=Version.build_cmd.format(self.code_path(), self.exec_path()),
                         stdout=PIPE,
                         stderr=PIPE,
