@@ -1,5 +1,5 @@
 #!/bin/bash
-cd ~/Documents/Sputnik_IDE/
+cd ~/Sputnik_IDE/
 source venv/bin/activate
 python --version
-python manage.py runserver --noreload 0.0.0.0:8000
+python manage.py runserver --noreload 0.0.0.0:8010
