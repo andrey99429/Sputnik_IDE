@@ -1,16 +1,26 @@
 #!/bin/bash
-cd ~/Documents/
+cd ~/
 git clone https://github.com/andrey99429/Sputnik_IDE.git
 
 if [ -d Sputnik_IDE/ ]; then
 cd Sputnik_IDE/
 
-pip install virtualenv
-python3 -m venv venv
+sudo pip3 install virtualenv
+virtualenv venv
 source venv/bin/activate
 
-pip install --upgrade pip
-pip install -r requirements.txt
+pip3 install --upgrade pip
+# pip3 install -r requirements.txt
+pip3 install Django
+
+mkdir SputnikIDE/static/libraries/
+cd SputnikIDE/static/libraries/
+git clone https://github.com/microsoft/monaco-editor.git
+wget -O jquery.min.js "https://code.jquery.com/jquery-3.4.1.min.js"
+wget -O bootstrap.zip "https://github.com/twbs/bootstrap/releases/download/v4.3.1/bootstrap-4.3.1-dist.zip"
+mkdir bootstrap
+unzip bootstrap.zip -d bootstrap
+rm bootstrap.zip
 
 ./runserver
 
