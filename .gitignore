@@ -2,6 +2,5 @@
 __pycache__/
 venv/
 SputnikIDE/static/libraries/
-!SputnikIDE/static/libraries/install_libraries
 Projects/
 !Projects/default.cpp
