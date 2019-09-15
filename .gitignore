@@ -3,5 +3,5 @@ __pycache__/
 venv/
 SputnikIDE/static/libraries/
 Projects/
-!Projects/default.cpp
+!Projects/default.c
 !Projects/libschsat.h
