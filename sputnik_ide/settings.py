@@ -35,8 +35,7 @@ ROOT_URLCONF = 'sputnik_ide.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, '/SputnikIDE/templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'SputnikIDE/templates'), os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

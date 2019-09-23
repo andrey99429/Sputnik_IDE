@@ -19,41 +19,6 @@ class SputnikIDEConfig(AppConfig):
 
     @staticmethod
     def initial():
-        SputnikIDEConfig.create_admin('pi', 'prettysecret', 'dabrameshin@hse.ru', 'Администратор', 'Системы')
-        SputnikIDEConfig.create_user('user', 'sputnik', 'student@edu.hse.ru', 'Пользователь', 'Системы')
-
-    @staticmethod
-    def create_admin(username, password, email, first_name, last_name):
-        from django.contrib.auth.models import User
-
-        if not User.objects.filter(username=username).exists():
-            user = User.objects.create_superuser(username=username, email=email, password=password)
-            user.first_name = first_name
-            user.last_name = last_name
-            user.save()
-            print('Admin with username "{}" created.'.format(username))
-        else:
-            print('User with username "{}" is already created.'.format(username))
-
-    @staticmethod
-    def create_user(username, password, email, first_name, last_name):
-        from django.contrib.auth.models import User
-
-        if not User.objects.filter(username=username).exists():
-            user = User.objects.create_user(username=username, email=email, password=password)
-            user.first_name = first_name
-            user.last_name = last_name
-            user.save()
-            print('User with username "{}" created.'.format(username))
-        else:
-            print('User with username "{}" is already created.'.format(username))
-
-    @staticmethod
-    def clear_all_users():
-        from django.contrib.auth.models import User
-        from SputnikIDE.models import Project
-
-        for user in User.objects.filter(is_superuser=False):
-            for project in Project.objects.filter(author=user):
-                project.delete()
-            user.delete()
+        import SputnikIDE.admin as admin
+        admin.create_admin('pi', 'prettysecret', 'dabrameshin@hse.ru', 'Администратор', 'Системы')
+        admin.create_user('user', 'sputnik', 'student@edu.hse.ru', 'Пользователь', 'Системы')

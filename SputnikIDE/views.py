@@ -17,7 +17,7 @@ def get_base_context(pagetitle=''):
             ('Проекты', '/projects/'),
         ],
         'admin_menu': [
-           # ('Список пользователей', ''),
+            ('Панель администратора', '/admin/'),
         ]
     }
 
