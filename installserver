@@ -1,16 +1,9 @@
 #!/bin/bash
-# cd ~/
-# git clone https://github.com/andrey99429/Sputnik_IDE.git
-
-# if [ -d Sputnik_IDE/ ]; then
-# cd Sputnik_IDE/
-
 sudo pip3 install virtualenv
 virtualenv venv
 source venv/bin/activate
 
 pip3 install --upgrade pip
-# pip3 install -r requirements.txt
 pip3 install Django
 
 mkdir SputnikIDE/static/libraries/
@@ -26,6 +19,4 @@ rm monaco-editor.tgz
 mv package ./monaco-editor
 
 cd ../../../
-./runserver
 
-# fi
