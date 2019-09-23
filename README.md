@@ -19,8 +19,17 @@ sudo apt-get install unzip
 cd ~
 git clone https://github.com/andrey99429/Sputnik_IDE.git
 cd Sputnik_IDE
-./installserver
+sudo ./installserver
 ./runserver
+```
+
+Для автозапуска сервера необходимо изменить файл автозапуска:
+```
+sudo nano /etc/rc.local
+```
+внутри файла прописать:
+```
+sudo -u pi /home/pi/Sputnik_IDE/runserver &
 ```
 
 В системе есть адмиристратор. Логин и пароль совпадают с логином и паролем пользователя платы.
