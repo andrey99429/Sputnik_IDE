@@ -20,7 +20,7 @@ class SputnikIDEConfig(AppConfig):
     @staticmethod
     def initial():
         SputnikIDEConfig.create_admin('pi', 'prettysecret', 'dabrameshin@hse.ru', 'Администратор', 'Системы')
-        SputnikIDEConfig.create_user('user', 'sputnik', 'student@edu.hse.ru', 'Пользоавтель', 'Системы')
+        SputnikIDEConfig.create_user('user', 'sputnik', 'student@edu.hse.ru', 'Пользователь', 'Системы')
 
     @staticmethod
     def create_admin(username, password, email, first_name, last_name):
