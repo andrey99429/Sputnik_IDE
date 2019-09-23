@@ -1,9 +1,11 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 import SputnikIDE.views as views
+from django.contrib import admin
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('admin/', admin.site.urls, name='admin'),
     path('login/', auth_views.LoginView.as_view(extra_context=views.get_base_context('Вход')), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 
