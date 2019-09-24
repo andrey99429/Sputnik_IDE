@@ -1,7 +1,14 @@
 .idea/
 __pycache__/
 venv/
-SputnikIDE/static/libraries/
+
 Projects/
 !Projects/default.c
 !Projects/libschsat.h
+
+SputnikIDE/static/libraries/
+
+SputnikIDE/migrations/
+!SputnikIDE/migrations/__init.py
+
+db.sqlite3

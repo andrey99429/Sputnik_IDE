@@ -20,3 +20,6 @@ mv package ./monaco-editor
 
 cd ../../../
 
+python sputnik_ide/create_db.py
+python manage.py makemigrations
+python manage.py migrate
