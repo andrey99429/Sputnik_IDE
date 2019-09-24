@@ -1,5 +1,5 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.admin import AdminSite
-from django.contrib import admin
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 
@@ -47,14 +47,16 @@ def create_user(username, password, email, first_name, last_name):
         print('User with username "{}" is already created.'.format(username))
 
 
+@login_required
 def clear_all_projects_view(request):
+    if request.user.is_superuser:
+        for user in User.objects.filter(is_superuser=False):
+            for project in Project.objects.filter(author=user):
+                project.delete()
     return redirect('/admin/')
 
 
 def clear_all_users():
-    from django.contrib.auth.models import User
-    from SputnikIDE.models import Project
-
     for user in User.objects.filter(is_superuser=False):
         for project in Project.objects.filter(author=user):
             project.delete()
