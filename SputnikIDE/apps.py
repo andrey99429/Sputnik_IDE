@@ -19,6 +19,9 @@ class SputnikIDEConfig(AppConfig):
 
     @staticmethod
     def initial():
-        import SputnikIDE.admin as admin
-        admin.create_admin('pi', 'prettysecret', 'dabrameshin@hse.ru', 'Администратор', 'Системы')
-        admin.create_user('user', 'sputnik', 'student@edu.hse.ru', 'Пользователь', 'Системы')
+        import os
+        from sputnik_ide.settings import DATABASES
+        if os.path.isfile(DATABASES['default']['NAME']):
+            import SputnikIDE.admin as admin
+            admin.create_admin('pi', 'prettysecret', 'dabrameshin@hse.ru', 'Администратор', 'Системы')
+            admin.create_user('user', 'sputnik', 'student@edu.hse.ru', 'Пользователь', 'Системы')
