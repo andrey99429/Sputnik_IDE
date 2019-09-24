@@ -32,7 +32,7 @@ sudo nano /etc/rc.local
 sudo -u pi /home/pi/Sputnik_IDE/runserver &
 ```
 
-Для обновление системы:
+Для обновления системы:
 ```
 cd ~/Sputnik_IDE
 git pull
