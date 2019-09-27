@@ -22,5 +22,6 @@ cd ../../../
 
 rm db.sqlite3
 python manage.py migrate
+chmod 777 db.sqlite3
 python manage.py makemigrations
 python manage.py migrate
