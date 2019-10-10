@@ -77,7 +77,8 @@ class Version(models.Model):
         with open(self.code_path(), 'r') as file:
             code = file.read()
             file.close()
-            return code
+        code = code.replace('#include "../../libschsat.h"', '#include "libschsat.h"')
+        return code
 
     def write_code(self, code):
         code = code.replace('#include "libschsat.h"', '#include "../../libschsat.h"')
