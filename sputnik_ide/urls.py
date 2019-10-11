@@ -1,8 +1,8 @@
 from django.contrib.auth import views as auth_views
 from django.urls import path
 import SputnikIDE.views as views
-from SputnikIDE.admin import admin_site
 import SputnikIDE.admin as admin_views
+from SputnikIDE.admin import admin_site
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -20,5 +20,5 @@ urlpatterns = [
     path('project/<int:project_id>/version/<int:version_id>/delete/', views.version_delete, name='version_delete'),
 
     path('admin/', admin_site.urls, name='admin_console'),
-    path('admin/clear_all_projects/', admin_views.clear_all_projects_view)
+    path('admin/clear_all_projects/', admin_views.clear_all_projects_view),
 ]
