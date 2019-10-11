@@ -32,13 +32,13 @@ function parse_response(response) {
         console_log.append(response['build_out']);
         if (response['build_err']) {
             danger_text += '<br><strong>Ошибка!</strong> Build error.';
-            $('#console').append(response['build_err']);
+            console_log.append(response['build_err']);
         } else {
             success_text += '<br><strong>Build successful.</strong>';
         }
     }
 
-    if (response['run_required']) {
+    /*if (response['run_required']) {
         console_log.append(response['run_out']);
         if (response['run_err'] || response['returncode'] !== 0) {
             danger_text += '<br><strong>Ошибка!</strong> Runtime error.';
@@ -47,7 +47,7 @@ function parse_response(response) {
             success_text += '<br><strong>Run successful.</strong>';
         }
         console_log.append('<span class="returncode">Process finished with exit code ' + response['returncode'] + '</span>');
-    }
+    }*/
 
     if (success_text !== time_str) {
         $('.response-status').append(create_alert('success', success_text));
@@ -80,6 +80,27 @@ function load(new_version, build, run) {
         }
 
         parse_response(msg);
+        if (msg['run_required']) {
+            var url = 'ws://' + window.location.host + '/project/'+ project_id +'/version/' + version_id + '/run/';
+            console.log(url);
+            var socket = new WebSocket(url);
+
+            socket.onopen = function (event) {
+                console.log('onopen', event);
+            };
+
+            socket.onmessage = function (event) {
+                console.log('onmessage', event);
+            };
+
+            socket.onerror = function (event) {
+                 console.log('onerror', event);
+            };
+
+            socket.onclose = function (event) {
+                 console.log('onclose', event);
+            };
+        }
     });
     request.fail(function(jqXHR, textStatus) {
         for (var button in buttons) {
@@ -88,6 +109,7 @@ function load(new_version, build, run) {
         //$("#console").html(textStatus);
     });
 }
+
 
 $(document).ready(function () {
     $(document).on('click', '#save_as_new', function () {

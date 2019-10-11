@@ -133,12 +133,12 @@ def version_loading(request, project_id, version_id):
         string = string.replace(PROJECTS_BASE_DIR, '')
         return string
 
-    if not Project.objects.filter(id=project_id).exists() or Project.objects.get(id=project_id).author != request.user:
+    if not Project.objects.filter(id=project_id).exists() or \
+            Project.objects.get(id=project_id).author != request.user:
         raise Http404
 
     if not Version.objects.filter(id=version_id).exists() or \
-            Version.objects.get(id=version_id).project_id != project_id or \
-            Version.objects.get(id=version_id).project.author != request.user:
+            Version.objects.get(id=version_id).project_id != project_id:
         raise Http404
 
     if request.method == 'POST':

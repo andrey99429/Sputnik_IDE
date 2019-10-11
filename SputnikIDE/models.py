@@ -100,13 +100,7 @@ class Version(models.Model):
     run_cmd = '{} /dev/ttyUSB0'
 
     def run(self):
-        process = Popen(args=Version.run_cmd.format(self.exec_path()),
-                        stdin=PIPE,
-                        stdout=PIPE,
-                        stderr=PIPE,
-                        universal_newlines=True,
-                        shell=True)
-        # process.stdin.write('')
+        process = self.create_process()
         try:
             out, err = process.communicate(timeout=300)
         except TimeoutExpired:
@@ -114,3 +108,12 @@ class Version(models.Model):
             out, err = process.communicate()
 
         return out, err, process.returncode
+
+    def create_process(self):
+        process = Popen(args=Version.run_cmd.format(self.exec_path()),
+                        stdin=PIPE,
+                        stdout=PIPE,
+                        stderr=PIPE,
+                        universal_newlines=True,
+                        shell=True)
+        return process
