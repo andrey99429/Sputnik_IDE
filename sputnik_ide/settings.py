@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'SputnikIDE.apps.SputnikIDEConfig',
 ]
 
@@ -31,6 +32,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'sputnik_ide.urls'
+WSGI_APPLICATION = 'sputnik_ide.wsgi.application'
+ASGI_APPLICATION = "sputnik_ide.routing.application"
 
 TEMPLATES = [
     {
@@ -48,7 +51,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'sputnik_ide.wsgi.application'
 
 DATABASES = {
     'default': {
