@@ -1,8 +1,20 @@
 from SputnikIDE.models import Project, Version
-from channels.db import database_sync_to_async
-from channels import consumer
+"""
+import asyncio.subprocess
+import asyncio
+"""
+import socketserver
+import socket
+import json
 
+"""
+path('project/<int:project_id>/version/<int:version_id>/run/', consumers.ConsoleConsumer)
+"""
 
+if __name__ == '__main__':
+    print(Project.objects.all())
+
+"""
 class ConsoleConsumer(consumer.AsyncConsumer):
     async def websocket_connect(self, event):
         user = self.scope['user']
@@ -16,15 +28,35 @@ class ConsoleConsumer(consumer.AsyncConsumer):
         })
 
         if version is not None:
-            process = await version.create_process()
-
-            await self.send({
-                'type': 'websocket.send',
-                'text': 'p{} v{}'.format(project_id, version_id)
-            })
+            asyncio.get_event_loop().run_until_complete(self.run_subprocess(version))
 
         await self.send({
             'type': 'websocket.close'
+        })
+
+    async def run_subprocess(self, version):
+        process = await asyncio.create_subprocess_shell(Version.run_cmd.format(version.exec_path()),
+                                                        stdin=asyncio.subprocess.PIPE,
+                                                        stdout=asyncio.subprocess.PIPE,
+                                                        stderr=asyncio.subprocess.PIPE,
+                                                        )
+        is_done = False
+        print('before loop')
+        while not is_done:
+            line = await process.stdout.readline()
+            if line == '':
+                is_done = True
+
+            data = {'line': line.replace(b'\n', b'<br>')}
+            await self.send({
+                'type': 'websocket.send',
+                'text': json.dumps(data)
+            })
+
+        data = {'returncode': process.returncode}
+        await self.send({
+            'type': 'websocket.send',
+            'text': json.dumps(data)
         })
 
     @database_sync_to_async
@@ -46,3 +78,4 @@ class ConsoleConsumer(consumer.AsyncConsumer):
     async def websocket_disconnect(self, event):
         # print('disconnected', event)
         pass
+"""

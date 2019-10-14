@@ -5,7 +5,6 @@ source venv/bin/activate
 
 pip3 install --upgrade pip
 pip3 install Django
-pip3 install channels
 
 mkdir SputnikIDE/static/libraries/
 cd SputnikIDE/static/libraries/
